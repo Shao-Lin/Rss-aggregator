@@ -1,14 +1,15 @@
 import globals from 'globals';
-
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 
-// mimic CommonJS variables -- not needed if using CommonJS
+// Define __filename and __dirname for ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Setup ESLint compatibility with old configs
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: pluginJs.configs.recommended,
@@ -26,13 +27,13 @@ export default [
         ...globals.browser,
       },
       parserOptions: {
-        // Eslint doesn't supply ecmaVersion in `parser.js` `context.parserOptions`
-        // This is required to avoid ecmaVersion < 2015 error or 'import' / 'export' error
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
     },
-    plugins: { import: importPlugin },
+    plugins: {
+      import: importPlugin,
+    },
     rules: {
       ...importPlugin.configs.recommended.rules,
     },
