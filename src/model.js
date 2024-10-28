@@ -1,18 +1,17 @@
 import * as yup from 'yup';
 
-export const createState = () => ({
+export const state = {
   validationState: 'valid',
-  errors: {
-    validateError: '',
-  },
+  error: '',
+  successMessage: '',
   isSubmiting: false,
   data: '',
   urlFeeds: [],
-});
+  feedsAndPosts: {
+    feeds: [],
+    posts: [],
+  },
+};
 
 export const createSchema = (urlFeeds, i18nextInstance) =>
-  yup
-    .string()
-    .required()
-    .url(i18nextInstance.t('texts.TheLinkMustBeAValidUrl'))
-    .notOneOf(urlFeeds, i18nextInstance.t('texts.RssAlreadyExists'));
+  yup.string().required().url(i18nextInstance.t('texts.TheLinkMustBeAValidUrl')).notOneOf(urlFeeds, i18nextInstance.t('texts.RssAlreadyExists'));
