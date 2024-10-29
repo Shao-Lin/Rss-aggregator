@@ -2,8 +2,11 @@ import onChange from 'on-change';
 import axios from 'axios';
 import i18next from 'i18next';
 import i18n from '../i18n.js';
+import checkRssFeed from './updateFeeds.js';
 import { state, createSchema } from '../model.js';
-import { elements, renderError, createFirst, createContent, afterSuccessAdd } from '../View/view.js';
+import {
+  elements, renderError, createFirst, createContent, afterSuccessAdd,
+} from '../View/view.js';
 import parser from './parser.js';
 
 export default () => {
@@ -49,7 +52,7 @@ export default () => {
         throw new Error('Validation failed');
       });
   };
-
+  checkRssFeed(state);
   elements.form.addEventListener('submit', (event) => {
     event.preventDefault();
     watchedState.isSubmiting = true;
@@ -75,7 +78,6 @@ export default () => {
         state.urlFeeds.push(state.data);
         afterSuccessAdd(state);
         watchedState.successMessage = i18nextInstance.t('texts.RssUploadedSuccessfully');
-        console.log(state);
       })
       .catch((err) => {
         if (err.message === 'Validation failed') {

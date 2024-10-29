@@ -13,5 +13,4 @@ export const state = {
   },
 };
 
-export const createSchema = (urlFeeds, i18nextInstance) =>
-  yup.string().required().url(i18nextInstance.t('texts.TheLinkMustBeAValidUrl')).notOneOf(urlFeeds, i18nextInstance.t('texts.RssAlreadyExists'));
+export const createSchema = (urlFeeds, i18nextInstance) => yup.string().required().url(i18nextInstance.t('texts.TheLinkMustBeAValidUrl')).notOneOf(urlFeeds, i18nextInstance.t('texts.RssAlreadyExists'));

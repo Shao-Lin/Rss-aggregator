@@ -34,4 +34,6 @@ const createContent = (rssXml, state) => {
   createPost(rssXml, state);
 };
 
-export { elements, renderError, createFirst, createContent, afterSuccessAdd }
+export {
+  elements, renderError, createFirst, createContent, afterSuccessAdd,
+};
