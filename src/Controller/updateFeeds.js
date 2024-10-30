@@ -15,8 +15,9 @@ const checkRssFeed = (state) => {
           const title = item.querySelector('title').textContent;
           const link = item.querySelector('link').textContent;
           const ul = document.getElementById('listP');
+          const description = document.querySelector('description');
           if (!oldTitlePosts.includes(title)) {
-            createLi(state, ul, i, link, title, false);
+            createLi(state, ul, i, link, title, description, false);
           }
         });
       })

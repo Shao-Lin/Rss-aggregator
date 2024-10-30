@@ -7,6 +7,7 @@ import { state, createSchema } from '../model.js';
 import {
   elements, renderError, createFirst, createContent, afterSuccessAdd,
 } from '../View/view.js';
+import { viewModal, viewedContent } from '../View/viewingTheNews.js';
 import parser from './parser.js';
 
 export default () => {
@@ -38,6 +39,16 @@ export default () => {
       elements.button.disabled = false;
     }
   });
+  const clickBtn = () => {
+    const viewButtons = document.querySelectorAll('[data-btn-id]');
+    viewButtons.forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        viewModal(state, btn);
+        viewedContent(state, btn);
+      });
+    });
+  };
 
   const validateField = () => {
     const schema = createSchema(state.urlFeeds, i18nextInstance);
@@ -97,6 +108,7 @@ export default () => {
       .finally(() => {
         watchedState.isSubmiting = false;
         elements.input.focus();
+        clickBtn();
       });
   });
 };

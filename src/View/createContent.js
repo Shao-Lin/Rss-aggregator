@@ -19,26 +19,30 @@ const createFeed = (rssXml, state) => {
   li.appendChild(description);
 };
 
-const createLi = (state, ul, i, link, title, oldFeed) => {
+const createLi = (state, ul, i, link, title, description, oldFeed) => {
   const li = document.createElement('li');
   li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
   li.setAttribute('postId', `${state.feedsAndPosts.posts.length + 1}`);
   if (oldFeed) {
-    state.feedsAndPosts.posts.push({ postId: li.getAttribute('postId'), feedId: state.feedsAndPosts.feeds.at(-1).feedId, title });
+    state.feedsAndPosts.posts.push({
+      postId: li.getAttribute('postId'), feedId: state.feedsAndPosts.feeds.at(-1).feedId, title, description,
+    });
   } else {
-    state.feedsAndPosts.posts.push({ postId: li.getAttribute('postId'), feedId: `${i + 1}`, title }); // спросить у гпт, нужно ли выносить это отсюда
+    state.feedsAndPosts.posts.push({
+      postId: li.getAttribute('postId'), feedId: `${i + 1}`, title, description,
+    }); // спросить у гпт, нужно ли выносить это отсюда
   }
   const a = document.createElement('a');
   a.setAttribute('href', `${link}`);
   a.classList.add('fw-bold');
-  a.setAttribute('data-id', `${state.feedsAndPosts.posts.postId}`);
+  a.setAttribute('data-a-id', `${li.getAttribute('postId')}`);
   a.setAttribute('target', 'blank');
   a.setAttribute('rel', 'noopener noreferrer');
   a.textContent = title;
 
   const button = document.createElement('button');
   button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-  button.setAttribute('data-id', `${state.feedsAndPosts.posts.postId}`);
+  button.setAttribute('data-btn-id', `${li.getAttribute('postId')}`);
   button.setAttribute('data-bs-toggle', 'modal');
   button.setAttribute('data-bs-target', '#modal');
   button.textContent = 'Просмотр';
@@ -57,7 +61,8 @@ const createPost = (rssXml, state) => {
   nodeItems.forEach((item, i) => {
     const title = item.querySelector('title').textContent;
     const link = item.querySelector('link').textContent;
-    createLi(state, ul, i, link, title, true);
+    const description = item.querySelector('description').textContent;
+    createLi(state, ul, i, link, title, description, true);
   });
 };
 export { createFeed, createPost, createLi };

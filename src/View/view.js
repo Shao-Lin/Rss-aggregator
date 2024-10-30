@@ -24,7 +24,6 @@ const afterSuccessAdd = (s) => {
   state.data = '';
   elements.input.value = '';
 };
-
 const createFirst = () => {
   createFeedForFirstTry();
   createPostForFirstTry();
