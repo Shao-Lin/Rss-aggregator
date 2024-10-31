@@ -39,6 +39,13 @@ export default () => {
       elements.button.disabled = false;
     }
   });
+  const clickBtnReadCompletely = (btn) => {
+    const aPost = btn.previousElementSibling;
+    const link = aPost.getAttribute('href');
+    const modal = document.querySelector('[id="modal"]');
+    const a = modal.querySelector('a');
+    a.setAttribute('href', `${link}`);
+  };
   const clickBtn = () => {
     const viewButtons = document.querySelectorAll('[data-btn-id]');
     viewButtons.forEach((btn) => {
@@ -46,6 +53,7 @@ export default () => {
         event.preventDefault();
         viewModal(state, btn);
         viewedContent(state, btn);
+        clickBtnReadCompletely(btn);
       });
     });
   };
@@ -80,7 +88,6 @@ export default () => {
         return response.data.contents;
       })
       .then((data) => {
-        // console.log(data);
         const rssXml = parser(data);
         if (state.urlFeeds.length === 0) {
           createFirst();
@@ -89,13 +96,12 @@ export default () => {
         state.urlFeeds.push(state.data);
         afterSuccessAdd(state);
         watchedState.successMessage = i18nextInstance.t('texts.RssUploadedSuccessfully');
+        clickBtn();
       })
       .catch((err) => {
         if (err.message === 'Validation failed') {
-          console.log(`aaaaaaaa ${state.error}`);
           console.log('Ошибка валидации:', watchedState.error);
         } else if (err.message === 'HttpError') {
-          console.log(`aaaaaaaa ${state.error}`);
           watchedState.error = i18nextInstance.t('texts.Response');
           console.log('Ошибка HTTP:', state.error);
         } else if (axios.isAxiosError(err)) {
@@ -108,7 +114,6 @@ export default () => {
       .finally(() => {
         watchedState.isSubmiting = false;
         elements.input.focus();
-        clickBtn();
       });
   });
 };

@@ -30,7 +30,7 @@ const createLi = (state, ul, i, link, title, description, oldFeed) => {
   } else {
     state.feedsAndPosts.posts.push({
       postId: li.getAttribute('postId'), feedId: `${i + 1}`, title, description,
-    }); // спросить у гпт, нужно ли выносить это отсюда
+    });
   }
   const a = document.createElement('a');
   a.setAttribute('href', `${link}`);
