@@ -86,6 +86,7 @@ export default () => {
         if (response.data.contents === null) {
           throw new Error('HttpError');
         }
+        watchedState.successMessage = i18nextInstance.t('texts.RssUploadedSuccessfully');
         return response.data.contents;
       })
       .then((data) => {
@@ -96,7 +97,6 @@ export default () => {
         createContent(rssXml, state);
         state.urlFeeds.push(state.data);
         afterSuccessAdd(state);
-        watchedState.successMessage = i18nextInstance.t('texts.RssUploadedSuccessfully');
         clickBtn();
       })
       .catch((err) => {
