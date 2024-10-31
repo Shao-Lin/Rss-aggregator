@@ -80,14 +80,18 @@ export default () => {
     validateField()
       .then(() => axios.get(proxy(state.data)))
       .then((response) => {
-        console.log(response);
-        if (response.data.contents === null) {
+        const data = response.data.contents;
+        const rssXml = parser(data);
+
+        const rssElement = rssXml.querySelector('rss');
+        const channelElement = rssXml.querySelector('channel');
+        const itemElement = rssXml.querySelector('item');
+        if (!(rssElement && channelElement && itemElement)) {
           throw new Error('HttpError');
         }
-        return response.data.contents;
+        return rssXml;
       })
-      .then((data) => {
-        const rssXml = parser(data);
+      .then((rssXml) => {
         if (state.urlFeeds.length === 0) {
           createFirst();
         }
