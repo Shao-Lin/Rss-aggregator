@@ -82,7 +82,8 @@ export default () => {
         return axios.get(`${link}${encodeURIComponent(`${state.data}`)}&disableCache=true`);
       })
       .then((response) => {
-        if (response.data.status.http_code !== 200) {
+        console.log(response);
+        if (response.data.contents === null) {
           throw new Error('HttpError');
         }
         return response.data.contents;
