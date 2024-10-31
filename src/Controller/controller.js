@@ -7,6 +7,7 @@ import { state, createSchema } from '../model.js';
 import {
   elements, renderError, createFirst, createContent, afterSuccessAdd,
 } from '../View/view.js';
+import proxy from '../proxy.js';
 import { viewModal, viewedContent } from '../View/viewingTheNews.js';
 import parser from './parser.js';
 
@@ -77,16 +78,12 @@ export default () => {
     watchedState.isSubmiting = true;
     watchedState.data = elements.input.value;
     validateField()
-      .then(() => {
-        const link = 'https://allorigins.hexlet.app/get?url=';
-        return axios.get(`${link}${encodeURIComponent(`${state.data}`)}&disableCache=true`);
-      })
+      .then(() => axios.get(proxy(state.data)))
       .then((response) => {
         console.log(response);
         if (response.data.contents === null) {
           throw new Error('HttpError');
         }
-        watchedState.successMessage = i18nextInstance.t('texts.RssUploadedSuccessfully');
         return response.data.contents;
       })
       .then((data) => {
@@ -97,6 +94,7 @@ export default () => {
         createContent(rssXml, state);
         state.urlFeeds.push(state.data);
         afterSuccessAdd(state);
+        watchedState.successMessage = i18nextInstance.t('texts.RssUploadedSuccessfully');
         clickBtn();
       })
       .catch((err) => {
